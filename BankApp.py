@@ -79,7 +79,14 @@ def login_session():
                 login_screen.destroy()
                 account_dashboard = Toplevel(master)
                 account_dashboard.title('Dashboard')
-            return
+            #rom here 
+            elif login_password != password:
+                login_notif.config(fg="red",text="Password incorrect!!")
+            return   
+        else:
+            login_notif.config(fg="red",text="No account found!!") #untill here I changed not the same to the old code
+
+
 def login():
     #Vars
     global tem_login_name
