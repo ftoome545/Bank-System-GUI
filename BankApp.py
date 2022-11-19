@@ -79,6 +79,15 @@ def login_session():
                 login_screen.destroy()
                 account_dashboard = Toplevel(master)
                 account_dashboard.title('Dashboard')
+                #Labels
+                Label(account_dashboard,text="Account Dashboard",font=('Calibri',12)).grid(row=0,sticky=N,pady=10)
+                Label(account_dashboard,text="Welcome "+name,font=('Calibri',12)).grid(row=1,sticky=N,pady=5)
+                #Buttons
+                Button(account_dashboard,text="Personal Details",font=('Calibri',12),width=30).grid(row=2,sticky=N,padx=10)
+                Button(account_dashboard,text="Deposit",font=('Calibri',12),width=30).grid(row=3,sticky=N,padx=10)
+                Button(account_dashboard,text="Withdraw",font=('Calibri',12),width=30).grid(row=4,sticky=N,padx=10)
+                Label(account_dashboard).grid(row=5,sticky=N,pady=10)
+                return
             #rom here 
             elif login_password != password:
                 login_notif.config(fg="red",text="Password incorrect!!")
