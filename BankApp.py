@@ -64,6 +64,7 @@ def register():
     Button(register_screen,text='Register',width=15,font=('Calibri',12),command=finish_reg).grid(row=5,sticky=N,pady=10)
 
 def login_session():
+    global login_name
     all_accounts = os.listdir()
     login_name = tem_login_name.get()
     login_password = tem_login_password.get()
@@ -83,9 +84,9 @@ def login_session():
                 Label(account_dashboard,text="Account Dashboard",font=('Calibri',12)).grid(row=0,sticky=N,pady=10)
                 Label(account_dashboard,text="Welcome "+name,font=('Calibri',12)).grid(row=1,sticky=N,pady=5)
                 #Buttons
-                Button(account_dashboard,text="Personal Details",font=('Calibri',12),width=30).grid(row=2,sticky=N,padx=10)
-                Button(account_dashboard,text="Deposit",font=('Calibri',12),width=30).grid(row=3,sticky=N,padx=10)
-                Button(account_dashboard,text="Withdraw",font=('Calibri',12),width=30).grid(row=4,sticky=N,padx=10)
+                Button(account_dashboard,text="Personal Details",font=('Calibri',12),width=30,command=personal_details).grid(row=2,sticky=N,padx=10)
+                Button(account_dashboard,text="Deposit",font=('Calibri',12),width=30,command=deposit).grid(row=3,sticky=N,padx=10)
+                Button(account_dashboard,text="Withdraw",font=('Calibri',12),width=30,command=withdraw).grid(row=4,sticky=N,padx=10)
                 Label(account_dashboard).grid(row=5,sticky=N,pady=10)
                 return
             #rom here 
@@ -94,8 +95,29 @@ def login_session():
             return   
         else:
             login_notif.config(fg="red",text="No account found!!") #untill here I changed not the same to the old code
-
-
+def deposit():
+    print("Deposit")
+def withdraw():
+    print("Withdraw")
+def personal_details():
+    #Vars
+    file = open(login_name,'r')
+    file_data = file.read()
+    user_details = file_data.split('\n')
+    details_name = user_details[0]
+    details_age = user_details[2]
+    details_gender = user_details[3]
+    details_balance = user_details[4]
+    #Personal details screen
+    personal_details_screen = Toplevel(master)
+    personal_details_screen.title("Personal Details")
+    #Labels
+    Label(personal_details_screen,text="Pesonal Details",font=('Calibri',14),width=30).grid(row=0,sticky=N,pady=10)
+    Label(personal_details_screen,text="Name: "+details_name,font=('Calibri',12)).grid(row=1,sticky=W,padx=5,pady=10)
+    Label(personal_details_screen,text="Age: "+details_age,font=('Calibri',12)).grid(row=2,sticky=W,padx=5,pady=10)
+    Label(personal_details_screen,text="Gender: "+details_gender,font=('Calibri',12)).grid(row=3,sticky=W,padx=5,pady=10)
+    Label(personal_details_screen,text="Balance: $ "+details_balance,font=('Calibri',12)).grid(row=4,sticky=W,padx=5,pady=10)
+    
 def login():
     #Vars
     global tem_login_name
