@@ -96,7 +96,29 @@ def login_session():
         else:
             login_notif.config(fg="red",text="No account found!!") #untill here I changed not the same to the old code
 def deposit():
-    print("Deposit")
+    #Vars
+    global amount
+    global deposit_notif
+    global current_balance_label
+    amount = StringVar()
+    file = open(login_name,'r')
+    file_data = file.read()
+    user_details = file_data.split('\n')
+    details_balance = user_details[4]
+    #Deposit Screen
+    deposit_screen = Toplevel(master)
+    deposit_screen.title('Deposit')
+    #Label
+    Label(deposit_screen,text='Deposit',font=('Calibri',12)).grid(row=0,sticky=N,pady=10)#pady it is 10 units of space from top and bottom
+    current_balance_label = Label(deposit_screen,text='Currnet Balance: $ ',font=('Calibri',12))
+    current_balance_label.grid(row=1,sticky=W)
+    Label(deposit_screen,text='Amount: ',font=('Calibri',12)).grid(row=2,sticky=W)
+    deposit_notif = Label(deposit_screen,font=('Calibri',12))
+    deposit_notif.grid(row=4,sticky=N,pady=5)
+    #Entry
+    Entry(deposit_screen,textvariable=amount,font=('Calibri',12)).grid(row=2,column=1,padx=2)
+    #Button
+    Button(deposit_screen,text='Finish',font=('Calibri',12),width=15).grid(row=3,sticky=W,pady=5,padx=5)
 def withdraw():
     print("Withdraw")
 def personal_details():
