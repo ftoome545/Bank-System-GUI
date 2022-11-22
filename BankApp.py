@@ -95,6 +95,8 @@ def login_session():
             return   
         else:
             login_notif.config(fg="red",text="No account found!!") #untill here I changed not the same to the old code
+
+
 def deposit():
     #Vars
     global amount
@@ -110,7 +112,7 @@ def deposit():
     deposit_screen.title('Deposit')
     #Label
     Label(deposit_screen,text='Deposit',font=('Calibri',12)).grid(row=0,sticky=N,pady=10)#pady it is 10 units of space from top and bottom
-    current_balance_label = Label(deposit_screen,text='Currnet Balance: $ ',font=('Calibri',12))
+    current_balance_label = Label(deposit_screen,text='Currnet Balance: $ '+details_balance,font=('Calibri',12))
     current_balance_label.grid(row=1,sticky=W)
     Label(deposit_screen,text='Amount: ',font=('Calibri',12)).grid(row=2,sticky=W)
     deposit_notif = Label(deposit_screen,font=('Calibri',12))
@@ -118,9 +120,59 @@ def deposit():
     #Entry
     Entry(deposit_screen,textvariable=amount,font=('Calibri',12)).grid(row=2,column=1,padx=2)
     #Button
-    Button(deposit_screen,text='Finish',font=('Calibri',12),width=15).grid(row=3,sticky=W,pady=5,padx=5)
+    Button(deposit_screen,text='Finish',font=('Calibri',12),width=15,command=finish_deposit).grid(row=3,sticky=W,pady=5,padx=5)
+def finish_deposit():
+    if amount.get() == "":
+        deposit_notif.config(fg='red',text="Amount is required!")
+        return
+    if float(amount.get()) <=0:
+        deposit_notif.config(fg='red',text="Negative currency is not accepted")
+        return
+    
+    file = open(login_name,'r+')
+    file_data = file.read()
+    details = file_data.split('\n')
+    current_balance = details[4]
+    updated_balance = current_balance
+    updated_balance = float(updated_balance) + float(amount.get())
+    #now we write the updated balance in the file 
+    # and to do that we've to replace the old balance to the new balance
+    # by using replace method
+    file_data = file_data.replace(current_balance,str(updated_balance))
+    #now we've to delete the old value then put the new balance
+    file.seek(0)
+    file.truncate(0) #becuase we want to start from zero
+    file.write(file_data)
+    file.close() 
+    #and now we've to update the balance label 
+    current_balance_label.config(text="Current Balance: $"+str(updated_balance),fg='green')
+
+    deposit_notif.config(text="Balance Updated",fg='green')
 def withdraw():
-    print("Withdraw")
+    #Vars
+    global withdraw_amount
+    global withdraw_notif
+    global current_balance_label
+    withdraw_amount = StringVar()
+    file = open(login_name,'r')
+    file_data = file.read()
+    user_details = file_data.split('\n')
+    details_balance = user_details[4]
+    #withdraw Screen
+    withdraw_screen = Toplevel(master)
+    withdraw_screen.title('Withdraw')
+    #Label
+    Label(withdraw_screen,text='Withdraw',font=('Calibri',12)).grid(row=0,sticky=N,pady=10)#pady it is 10 units of space from top and bottom
+    current_balance_label = Label(withdraw_screen,text='Currnet Balance: $ '+details_balance,font=('Calibri',12))
+    current_balance_label.grid(row=1,sticky=W)
+    Label(withdraw_screen,text='Amount: ',font=('Calibri',12)).grid(row=2,sticky=W)
+    withdraw_notif = Label(withdraw_screen,font=('Calibri',12))
+    withdraw_notif.grid(row=4,sticky=N,pady=5)
+    #Entry
+    Entry(withdraw_screen,textvariable=amount,font=('Calibri',12)).grid(row=2,column=1,padx=2)
+    #Button
+    Button(withdraw_screen,text='Finish',font=('Calibri',12),width=15,command=finish_withdraw).grid(row=3,sticky=W,pady=5,padx=5)
+
 def personal_details():
     #Vars
     file = open(login_name,'r')
