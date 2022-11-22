@@ -169,10 +169,36 @@ def withdraw():
     withdraw_notif = Label(withdraw_screen,font=('Calibri',12))
     withdraw_notif.grid(row=4,sticky=N,pady=5)
     #Entry
-    Entry(withdraw_screen,textvariable=amount,font=('Calibri',12)).grid(row=2,column=1,padx=2)
+    Entry(withdraw_screen,textvariable=withdraw_amount,font=('Calibri',12)).grid(row=2,column=1,padx=2)
     #Button
     Button(withdraw_screen,text='Finish',font=('Calibri',12),width=15,command=finish_withdraw).grid(row=3,sticky=W,pady=5,padx=5)
+def finish_withdraw():
+    if withdraw_amount.get() == "":
+        withdraw_notif.config(fg='red',text="Amount is required!")
+        return
+    if float(withdraw_amount.get()) <=0:
+        withdraw_notif.config(fg='red',text="Negative currency is not accepted")
+        return
+    
+    file = open(login_name,'r+')
+    file_data = file.read()
+    details = file_data.split('\n')
+    current_balance = details[4]
+    updated_balance = current_balance
+    updated_balance = float(updated_balance) - float(withdraw_amount.get())
+    #now we write the updated balance in the file 
+    # and to do that we've to replace the old balance to the new balance
+    # by using replace method
+    file_data = file_data.replace(current_balance,str(updated_balance))
+    #now we've to delete the old value then put the new balance
+    file.seek(0)
+    file.truncate(0) #becuase we want to start from zero
+    file.write(file_data)
+    file.close() 
+    #and now we've to update the balance label 
+    current_balance_label.config(text="Current Balance: $"+str(updated_balance),fg='green')
 
+    withdraw_notif.config(text="Balance Updated",fg='green')
 def personal_details():
     #Vars
     file = open(login_name,'r')
