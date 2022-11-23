@@ -184,6 +184,10 @@ def finish_withdraw():
     file_data = file.read()
     details = file_data.split('\n')
     current_balance = details[4]
+    #here we'll add more vaildition we need to find wherther the amount is grater than the balance
+    if float(withdraw_amount.get()) > float(current_balance):
+        withdraw_notif.config(text='Insufficient Funds!',fg='red')
+        return
     updated_balance = current_balance
     updated_balance = float(updated_balance) - float(withdraw_amount.get())
     #now we write the updated balance in the file 
@@ -196,7 +200,7 @@ def finish_withdraw():
     file.write(file_data)
     file.close() 
     #and now we've to update the balance label 
-    current_balance_label.config(text="Current Balance: $"+str(updated_balance),fg='green')
+    current_balance_label.config(text="Current Balance: $ "+str(updated_balance),fg='green')
 
     withdraw_notif.config(text="Balance Updated",fg='green')
 def personal_details():
