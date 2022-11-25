@@ -204,6 +204,10 @@ def finish_withdraw():
 
     withdraw_notif.config(text="Balance Updated",fg='green')
 def personal_details():
+    global personal_details_screen
+    global details_name
+    global details_age
+    global details_gender
     #Vars
     file = open(login_name,'r')
     file_data = file.read()
@@ -221,6 +225,37 @@ def personal_details():
     Label(personal_details_screen,text="Age: "+details_age,font=('Calibri',12)).grid(row=2,sticky=W,padx=5,pady=10)
     Label(personal_details_screen,text="Gender: "+details_gender,font=('Calibri',12)).grid(row=3,sticky=W,padx=5,pady=10)
     Label(personal_details_screen,text="Balance: $ "+details_balance,font=('Calibri',12)).grid(row=4,sticky=W,padx=5,pady=10)
+    #Button
+    Button(personal_details_screen,text="Edit",width=15,font=('Calibri',12),command=edit).grid(row=5,sticky=N,pady=10)
+
+def edit():
+    #Vars
+    global edit_details_name
+    global edit_details_age
+    edit_details_name = StringVar()
+    edit_details_age = StringVar()
+    personal_details_screen.destroy()
+    #Edit Screen
+    edit_screen = Toplevel(master)
+    edit_screen.title('Editing Personal Details')
+    #Labels
+    Label(edit_screen,text="Pesonal Details",font=('Calibri',14),width=30).grid(row=0,sticky=N,pady=10)
+    Label(edit_screen,text="Name: ",font=('Calibri',12)).grid(row=1,sticky=W,padx=5,pady=10)
+    Label(edit_screen,text="Age: ",font=('Calibri',12)).grid(row=2,sticky=W,padx=5,pady=10)
+    #Entry
+    Entry(edit_screen, textvariable=edit_details_name).grid(row=1,column=0)
+    Entry(edit_screen, textvariable=edit_details_age).grid(row=2,column=0)
+    #Button
+    Button(edit_screen,text="OK",width=15,font=('Calibri',12),command=okay).grid(row=5,sticky=N,pady=10)
+
+def okay():
+    new_name = edit_details_name.get()
+    new_age = edit_details_age.get()
+    all_accounts = os.listdir()
+    
+    if new_name == "" or new_age == "":
+        notif.config(fg="red",text="All fields required *")
+        return
     
 def login():
     #Vars
