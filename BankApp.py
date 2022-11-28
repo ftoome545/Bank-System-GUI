@@ -230,10 +230,10 @@ def personal_details():
 
 def edit():
     #Vars
-    global edit_details_name
+    global edit_details_gender
     global edit_details_age
     global edit_notif 
-    edit_details_name = StringVar()
+    edit_details_gender = StringVar()
     edit_details_age = StringVar()
     personal_details_screen.destroy()
     #Edit Screen
@@ -241,33 +241,35 @@ def edit():
     edit_screen.title('Editing Personal Details')
     #Labels
     Label(edit_screen,text="Pesonal Details",font=('Calibri',14),width=30).grid(row=0,sticky=N,pady=10)
-    Label(edit_screen,text="Name: ",font=('Calibri',12)).grid(row=1,sticky=W,padx=5,pady=10)
-    Label(edit_screen,text="Age: ",font=('Calibri',12)).grid(row=2,sticky=W,padx=5,pady=10)
+    Label(edit_screen,text="Age: ",font=('Calibri',12)).grid(row=1,sticky=W,padx=5,pady=10)
+    Label(edit_screen,text="Gender: ",font=('Calibri',12)).grid(row=2,sticky=W,padx=5,pady=10)
     #Entry
-    Entry(edit_screen, textvariable=edit_details_name).grid(row=1,column=0)
-    Entry(edit_screen, textvariable=edit_details_age).grid(row=2,column=0)
+    Entry(edit_screen, textvariable=edit_details_age).grid(row=1,column=0)
+    Entry(edit_screen, textvariable=edit_details_gender).grid(row=2,column=0)
     edit_notif = Label(edit_screen, font=('Calibri',12))
     edit_notif.grid(row=6,sticky=W)
     #Button
     Button(edit_screen,text="OK",width=15,font=('Calibri',12),command=okay).grid(row=5,sticky=N,pady=10)
 
 def okay():
-    if edit_details_name.get() == "" or edit_details_age.get() == "":
-        edit_notif.config(fg='red',text='All fildes are required!')
+    if edit_details_gender.get() == "" or edit_details_age.get() == "":
+        edit_notif.config(fg='red',text='All fields are required!')
         return
+
     file = open(login_name,'r+')
     file_data = file.read()
     details = file_data.split('\n')
-    current_name = details[0]
     current_age = details[2]
-    updated_name = edit_details_name
+    current_gender = details[3]
     updated_age = edit_details_age
+    updated_gender = edit_details_gender
 
-    file_data = file_data.replace(current_name,str(updated_name))
     file_data = file_data.replace(current_age,str(updated_age))
+    print(updated_age)
+    file_data = file_data.replace(current_gender,str(updated_gender))
     file.seek(0)
-    file.truncate(file_data)
-    # file.truncate(file_data_2)
+    file.truncate(0)
+    file.write(file_data)
     file.close
     #now we'll notify the user his or her info are updated successfully
     edit_notif.config(fg='green',text='The name and the age are updated!')
