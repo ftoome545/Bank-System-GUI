@@ -264,9 +264,8 @@ def okay():
     updated_age = edit_details_age
     updated_gender = edit_details_gender
 
-    file_data = file_data.replace(current_age,str(updated_age))
-    print(updated_age)
-    file_data = file_data.replace(current_gender,str(updated_gender))
+    file_data = file_data.replace(current_age,updated_age.get())
+    file_data = file_data.replace(current_gender,updated_gender.get())
     file.seek(0)
     file.truncate(0)
     file.write(file_data)
