@@ -134,7 +134,7 @@ def finish_deposit():
     details = file_data.split('\n')
     current_balance = details[4]
     updated_balance = current_balance
-    updated_balance = float(updated_balance) + float(amount.get())
+    updated_balance = round(float(updated_balance),2) + round(float(amount.get()),2)
     #now we write the updated balance in the file 
     # and to do that we've to replace the old balance to the new balance
     # by using replace method
@@ -189,7 +189,7 @@ def finish_withdraw():
         withdraw_notif.config(text='Insufficient Funds!',fg='red')
         return
     updated_balance = current_balance
-    updated_balance = float(updated_balance) - float(withdraw_amount.get())
+    updated_balance = round(float(updated_balance),2) - round(float(withdraw_amount.get()),2)
     #now we write the updated balance in the file 
     # and to do that we've to replace the old balance to the new balance
     # by using replace method
